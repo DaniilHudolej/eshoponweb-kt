@@ -1,0 +1,29 @@
+name: КТ №8 eShopOnWeb Integration
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    env:
+      UseOnlyInMemoryDatabase: 'true'
+      ASPNETCORE_ENVIRONMENT: Development
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Restore
+        run: dotnet restore eShopOnWeb.sln
+      - name: KT4 big bang and KT5 KT6 KT7 layers
+        run: |
+          dotnet test tests/UnitTests --no-restore --logger trx --results-directory artifacts/KT8/unit
+          dotnet test tests/IntegrationTests --no-restore --logger trx --results-directory artifacts/KT8/integration
+          dotnet test tests/FunctionalTests --no-restore --blame-hang-timeout 60s --logger trx --results-directory artifacts/KT8/web
+      - name: Save actual test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: KT8-test-results
+          path: artifacts/KT8

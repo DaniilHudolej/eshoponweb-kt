@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.ApplicationCore.Specifications;
@@ -21,7 +21,7 @@ public class GetOrderDetailsHandler : IRequestHandler<GetOrderDetails, OrderDeta
         var spec = new OrderWithItemsByIdSpec(request.OrderId);
         var order = await _orderRepository.FirstOrDefaultAsync(spec, cancellationToken);
 
-        if (order == null)
+        if (order == null || order.BuyerId != request.UserName)
         {
             return null;
         }

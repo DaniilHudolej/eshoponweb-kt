@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.Specification;
@@ -28,7 +28,7 @@ public class GetOrderDetails
     [Fact]
     public async Task NotBeNullIfOrderExists()
     {
-        var request = new eShopWeb.Web.Features.OrderDetails.GetOrderDetails("SomeUserName", 0);
+        var request = new eShopWeb.Web.Features.OrderDetails.GetOrderDetails("buyerId", 0);
 
         var handler = new GetOrderDetailsHandler(_mockOrderRepository);
 
